@@ -1,0 +1,5 @@
+uvicorn==0.25.0
+fastapi==0.105.0
+PyYAML==6.0.1
+httpx==0.26.0
+furl==2.1.3

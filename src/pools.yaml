@@ -1,0 +1,22 @@
+pool-0:
+  - scheme: http
+    host: localhost
+    port: 8080
+    weight: 1
+  - scheme: http
+    host: localhost
+    port: 8081
+    weight: 2
+  - scheme: http
+    host: localhost
+    port: 8082
+    weight: 3
+pool-1:
+  - scheme: http
+    host: localhost
+    port: 8083
+    weight: 1
+  - scheme: http
+    host: localhost
+    port: 8084
+    weight: 4
