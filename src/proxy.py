@@ -23,31 +23,30 @@ async def proxy(request: Request, path_str: str):
     log_string = f"{request_id} | {request_method} | {request_url}"
     pool_id_header_name = config.POOL_ID_HEADER.lower()
 
-    # if pool_id_header_name not in request_headers:
-    #     log_error(f"{log_string} | Pool ID header is missing")
-    #     return Response(
-    #         status_code=400,
-    #         headers={config.REQUEST_ID_HEADER: request_id},
-    #         content=f"{config.POOL_ID_HEADER} header is missing",
-    #     )
-    #
-    # pool_id = request_headers[pool_id_header_name]
-    # del request_headers[pool_id_header_name]
-    #
-    # if pool_id not in pools:
-    #     log_error(f"{log_string} | Unknown Pool ID: {pool_id}")
-    #     return Response(
-    #         status_code=404,
-    #         headers={config.REQUEST_ID_HEADER: request_id},
-    #         content="Unknown Pool ID",
-    #     )
-    #
-    # log_request(
-    #     f"{log_string} | {pool_id} | {request_headers} | {request_body.decode()} | {request_cookies}"
-    # )
+    if pool_id_header_name not in request_headers:
+        log_error(f"{log_string} | Pool ID header is missing")
+        return Response(
+            status_code=400,
+            headers={config.REQUEST_ID_HEADER: request_id},
+            content=f"{config.POOL_ID_HEADER} header is missing",
+        )
 
-    # target = secrets.choice(pools[pool_id])
-    target = secrets.choice(pools["pool-json"])
+    pool_id = request_headers[pool_id_header_name]
+    del request_headers[pool_id_header_name]
+
+    if pool_id not in pools:
+        log_error(f"{log_string} | Unknown Pool ID: {pool_id}")
+        return Response(
+            status_code=404,
+            headers={config.REQUEST_ID_HEADER: request_id},
+            content="Unknown Pool ID",
+        )
+
+    log_request(
+        f"{log_string} | {pool_id} | {request_headers} | {request_body.decode()} | {request_cookies}"
+    )
+
+    target = secrets.choice(pools[pool_id])
     redirect_furl = furl(request_url)
     redirect_furl.scheme = target[0]
     redirect_furl.host = target[1]
